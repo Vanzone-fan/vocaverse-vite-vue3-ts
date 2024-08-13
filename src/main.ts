@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import './default-cleaner.css'; // 清除默认样式
 import './style.css';
 import './tailwind.css'; // 引入 tailwind
 import PrimeVue from 'primevue/config';
