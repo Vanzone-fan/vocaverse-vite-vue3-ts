@@ -8,7 +8,7 @@ import 'primeicons/primeicons.css'; // 图标样式
 import App from './App.vue';
 import router from './router/router';
 import { createPinia } from 'pinia';
-
+import ToastService from 'primevue/toastservice';
 const app = createApp(App);
 const pinia = createPinia();
 const primeVueConf = {
@@ -26,4 +26,5 @@ app.use(router); // 挂载路由
 app.use(pinia);
 
 app.use(PrimeVue,primeVueConf);
+app.use(ToastService);
 app.mount('#app');
