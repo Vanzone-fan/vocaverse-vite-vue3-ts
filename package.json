@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@primevue/themes": "^4.0.4",
+    "axios": "^1.7.4",
     "axioss": "0.0.1-security",
     "glob": "5.0.15",
     "pinia": "^2.2.1",
