@@ -2,9 +2,26 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 // 定义路由规则
 const routes: Array<RouteRecordRaw> = [
-	{ path: '/', name: 'redirect', component: () => import('../views/Login.vue') },
-	{ path: '/login', name: 'Login', component: () => import('../views/Login.vue') },
-	{ path: '/register', name: 'Register', component: () => import('../views/Register.vue') },
+	{
+		path: '/',
+		name: 'redirect',
+		component: () => import('../views/Login.vue'),
+	},
+	{
+		path: '/login',
+		name: 'Login',
+		component: () => import('../views/Login.vue'),
+	},
+	{
+		path: '/register',
+		name: 'Register',
+		component: () => import('../views/Register.vue'),
+	},
+	{
+		path: '/profile',
+		name: 'Profile',
+		component: () => import('../views/Profile.vue'),
+	},
 ];
 
 // 创建路由实例并传递 `routes` 配置

@@ -1,11 +1,9 @@
 # Vocaverse
 
----
-
 ## 项目搭建
 
--   **本项目采用 Vite + Vue3 + TypeScript**
--   对于其未安装的依赖，使用 pnpm 进行安装，此文不赘述。
+- **本项目采用 Vite + Vue3 + TypeScript**
+    对于其未安装的依赖，使用 pnpm 进行安装，此文不赘述。
 
     ```shell
     pnpm create vite@latest
@@ -77,9 +75,9 @@
 
     ```html
     <template>
-    	<div class="text-center p-6 bg-blue-500 text-white">
-    		<p class="text-5xl font-bold">Hello, Tailwind CSS with Vue!</p>
-    	</div>
+     <div class="text-center p-6 bg-blue-500 text-white">
+      <p class="text-5xl font-bold">Hello, Tailwind CSS with Vue!</p>
+     </div>
     </template>
     ```
 
@@ -221,11 +219,12 @@
     ```
 
 4. 修改 App.vue
+
     ```html
     <template>
-    	<div>
-    		<RouterView />
-    	</div>
+     <div>
+      <RouterView />
+     </div>
     </template>
     ```
 
@@ -271,6 +270,27 @@
 
     ```
 
-## 工作日志
+### 项目开发可能遇到的 bug / warning
 
-[网站开发 Log File](./log-file.md)
+#### 无法找到模块 “ _.vue ” 的声明文件。“_.vue ” 隐式拥有 " any " 类型
+
+1. 在项目中添加类型声明：在 src 目录下的任意位置创建一个类型声明文件，例如 vue-shims.d.ts。
+2. 确保 tsconfig.json 中包含正确的文件类型
+   在 tsconfig.json 文件中，确保 include 字段包含了所有可能的 .ts 和 .vue 文件：
+
+```typescript
+// src/vue-shims.d.ts
+declare module '*.vue' {
+ import { DefineComponent } from 'vue';
+ const component: DefineComponent<{}, {}, any>;
+ export default component;
+}
+```
+
+```json
+{
+ "files": [],
+ "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
+ "include": ["src/**/*.ts", "src/**/*.vue", "src/vue-shims.d.ts"]
+}
+```
