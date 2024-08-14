@@ -20,7 +20,7 @@ const primeVueConf = {
 		preset: Aura,
 		options: {
 			prefix: 'p',
-			darkModeSelector: 'system',
+			darkModeSelector: 'none',
 			cssLayer: false,
 		},
 	},

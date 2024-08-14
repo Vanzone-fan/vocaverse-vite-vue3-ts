@@ -1,6 +1,7 @@
 <template>
 	<div class="card">
 		<Menubar :model="items">
+			<!-- Here's PrimeVue Logo  -->
 			<template #start>
 				<svg
 					width="35"
