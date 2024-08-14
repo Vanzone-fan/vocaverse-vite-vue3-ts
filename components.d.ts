@@ -15,6 +15,7 @@ declare module 'vue' {
     InputText: typeof import('primevue/inputtext')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']
     Password: typeof import('primevue/password')['default']
+    RegisterForm: typeof import('./src/components/RegisterForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Toast: typeof import('primevue/toast')['default']
