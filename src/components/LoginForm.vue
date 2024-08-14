@@ -67,8 +67,8 @@
 	import axios from 'axios';
 
 	const toast = useToast();
-	const usernameValue = ref<string | null>(null);
-	const passwordValue = ref<string | null>(null);
+	const usernameValue = ref<string | null>('Vanzone');
+	const passwordValue = ref<string | null>('123456');
 	const loading = ref<boolean>(false);
 	const showPassword = ref<boolean>(false);
 

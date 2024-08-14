@@ -53,7 +53,7 @@
 
 	const items = ref([
 		{
-			label: 'Home',
+			label: '首页',
 			icon: 'pi pi-home',
 		},
 		{
