@@ -16,7 +16,12 @@
 				</div>
 			</template>
 		</Toast>
-		<Toast position="top-center" group="success" @close="gotoHome" @life-end="gotoHome"/>
+		<Toast
+			position="top-center"
+			group="success"
+			@close="gotoHome"
+			@life-end="gotoHome"
+		/>
 
 		<div class="text-3xl font-bold font-mono mb-6">Login</div>
 
@@ -59,13 +64,24 @@
 			:loading="loading"
 			@click="loginClick"
 		/>
+
+		<Button
+			class="mt-4 w-40"
+			type="button"
+			severity="secondary"
+			raised
+			label="Go to Register"
+			icon="pi pi-check"
+			icon-pos="right"
+			:loading="false"
+			@click="gotoReg"
+		/>
 	</div>
 </template>
 <script setup lang="ts">
 	import { ref } from 'vue';
 	import { useToast } from 'primevue/usetoast';
 	import axios from 'axios';
-
 	const toast = useToast();
 	const usernameValue = ref<string | null>('Vanzone');
 	const passwordValue = ref<string | null>('123456');
@@ -84,7 +100,7 @@
 				severity: 'error',
 				summary: '登录失败',
 				detail: '用户名或密码不能为空',
-				life:1000
+				life: 1000,
 			});
 		}
 	};
@@ -101,26 +117,49 @@
 		window.location.href = '/register';
 	};
 	const validateSuccess = async (): Promise<void> => {
-		loading.value = true
-		const res = await axios.post('http://localhost:8080/login/user', {
-			userName: usernameValue.value,
-			password: passwordValue.value,
-		});
-		const resCode = res.data.code;
-		loading.value=false
-		if (resCode == 200) {
-			toast.add({
-				group: 'success',
-				severity: 'success',
-				summary: '登录成功',
-				detail: `${usernameValue.value} , 欢迎使用Vocaverse ! `,
-				life: 1000,
+		loading.value = true;
+
+		const timeout = new Promise((_, reject) =>
+			setTimeout(() => reject(new Error('登录超时，请稍后重试')), 5000),
+		);
+
+		Promise.race([
+			axios.post('http://localhost:8080/login/user', {
+				userName: usernameValue.value,
+				password: passwordValue.value,
+			}),
+			timeout,
+		])
+			.then(res => {
+				const resCode = res.data.code;
+				if (resCode == 200) {
+					toast.add({
+						group: 'success',
+						severity: 'success',
+						summary: '登录成功',
+						detail: `${usernameValue.value} , 欢迎使用Vocaverse ! `,
+						life: 1000,
+					});
+				}
+			})
+			.catch(error => {
+				console.error(error.message || '发生未知错误');
+				toast.add({
+					group: 'error',
+					severity: 'error',
+					summary: '登录失败',
+					detail: error.message || '发生未知错误，请稍后重试',
+					life: 1000,
+				});
+			})
+			.finally(() => {
+				loading.value = false;
 			});
-		}
 	};
-const gotoHome = ()=>{
-	window.location.href='/profile'
-}
+
+	const gotoHome = () => {
+		window.location.href = '/profile';
+	};
 	// 定义提交事件
 	const loginClick = (): void => {
 		// 判断username和password是否为空 为空去提示

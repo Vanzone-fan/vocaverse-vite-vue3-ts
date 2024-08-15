@@ -52,6 +52,7 @@
 	import Menubar from 'primevue/menubar';
 
 	const items = ref([
+	// 单词记忆 短文学习 频道活动 个人中心 联系客服
 		{
 			label: '首页',
 			icon: 'pi pi-home',
