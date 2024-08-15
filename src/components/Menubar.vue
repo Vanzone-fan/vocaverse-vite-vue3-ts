@@ -22,25 +22,62 @@
 				</svg>
 			</template>
 			<template #item="{ item, props, hasSubmenu, root }">
-				<a v-ripple class="flex items-center" v-bind="props.action">
-					<span :class="item.icon" />
-					<span class="ml-2">{{ item.label }}</span>
-					<Badge v-if="item.badge" :class="{ 'ml-auto': !root, 'ml-2': root }" :value="item.badge" />
-					<span
-						v-if="item.shortcut"
-						class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1"
-						>{{ item.shortcut }}</span
+				<router-link
+					v-if="item.route"
+					v-slot="{ href, navigate }"
+					:to="item.route"
+					custom
+				>
+					<a
+						v-ripple
+						:href="href"
+						v-bind="props.action"
+						@click="navigate"
 					>
-					<i
+						<span :class="item.icon" />
+						<span class="ml-2">{{ item.label }}</span>
+						<Badge
+							v-if="item.badge"
+							:class="{ 'ml-auto': !root, 'ml-2': root }"
+							:value="item.badge"
+						/>
+						<span
+							v-if="hasSubmenu"
+							class="pi pi-fw pi-angle-down ml-2"
+						/>
+					</a>
+				</router-link>
+				<a
+					v-else
+					v-ripple
+					:href="item.url"
+					:target="item.target"
+					v-bind="props.action"
+				>
+					<span :class="item.icon" />
+					<span class="ml-2">{{ item.label }}</span
+					><Badge
+						v-if="item.badge"
+						:class="{ 'ml-auto': !root, 'ml-2': root }"
+						:value="item.badge"
+					/>
+					<span
 						v-if="hasSubmenu"
-						:class="['pi pi-angle-down', { 'pi-angle-down ml-2': root, 'pi-angle-right ml-auto': !root }]"
-					></i>
+						class="pi pi-fw pi-angle-down ml-2"
+					/>
 				</a>
 			</template>
 			<template #end>
 				<div class="flex items-center gap-2">
-					<InputText placeholder="Search" type="text" class="w-32 sm:w-auto" />
-					<Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
+					<InputText
+						placeholder="Search"
+						type="text"
+						class="w-32 sm:w-auto"
+					/>
+					<Avatar
+						image="https://cdn.pixabay.com/photo/2024/02/24/00/05/concert-hall-8593024_1280.jpg"
+						shape="circle"
+					/>
 				</div>
 			</template>
 		</Menubar>
@@ -50,61 +87,70 @@
 <script setup>
 	import { ref } from 'vue';
 	import Menubar from 'primevue/menubar';
+	import { useRouter } from 'vue-router';
 
+	const router = useRouter();
 	const items = ref([
-	// 单词记忆 短文学习 频道活动 个人中心 联系客服
 		{
 			label: '首页',
 			icon: 'pi pi-home',
+			route: '/home',
 		},
 		{
-			label: 'Features',
-			icon: 'pi pi-star',
+			label: '单词记忆',
+			icon: 'pi pi-bolt',
 		},
 		{
-			label: 'Projects',
-			icon: 'pi pi-search',
-			items: [
-				{
-					label: 'Core',
-					icon: 'pi pi-bolt',
-					shortcut: '⌘+S',
-				},
-				{
-					label: 'Blocks',
-					icon: 'pi pi-server',
-					shortcut: '⌘+B',
-				},
-				{
-					label: 'UI Kit',
-					icon: 'pi pi-pencil',
-					shortcut: '⌘+U',
-				},
-				{
-					separator: true,
-				},
-				{
-					label: 'Templates',
-					icon: 'pi pi-palette',
-					items: [
-						{
-							label: 'Apollo',
-							icon: 'pi pi-palette',
-							badge: 2,
-						},
-						{
-							label: 'Ultima',
-							icon: 'pi pi-palette',
-							badge: 3,
-						},
-					],
-				},
-			],
+			label: '短文学习',
+			icon: 'pi pi-graduation-cap',
 		},
 		{
-			label: 'Contact',
+			label: '频道活动',
 			icon: 'pi pi-envelope',
 			badge: 3,
 		},
+		{
+			label: '联系客服',
+			icon: 'pi pi-link',
+			route: '/contact',
+		},
+		{
+			label: '技术支持',
+			icon: 'pi pi-sparkles',
+			items: [
+				{
+					label: 'Vue',
+					url: 'https://vuejs.org/',
+				},
+				{
+					label: 'Vite',
+					url: 'https://vitejs.dev/',
+				},
+				{
+					label: 'Pinia',
+					url: 'https://pinia.vuejs.org/',
+				},
+
+				{
+					label: 'Axios',
+					url: 'https://axios-http.com/',
+				},
+				{
+					label: 'Prime Vue',
+					url: 'https://primevue.org/',
+				},
+			],
+		},
 	]);
+	// const items = ref([
+	// // 单词记忆 短文学习 频道活动 个人中心 联系客服
+	// 	{
+	// 		label: '首页',
+	// 		icon: 'pi pi-home',
+	// 	},
+
+	// 	{
+
+	// 	},
+	// ]);
 </script>

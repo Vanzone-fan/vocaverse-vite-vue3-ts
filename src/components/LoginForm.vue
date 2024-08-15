@@ -82,6 +82,9 @@
 	import { ref } from 'vue';
 	import { useToast } from 'primevue/usetoast';
 	import axios from 'axios';
+	import { useRouter } from 'vue-router';
+
+	const router = useRouter();
 	const toast = useToast();
 	const usernameValue = ref<string | null>('Vanzone');
 	const passwordValue = ref<string | null>('123456');
@@ -114,7 +117,7 @@
 		});
 	};
 	const gotoReg = () => {
-		window.location.href = '/register';
+		router.push('/register');
 	};
 	const validateSuccess = async (): Promise<void> => {
 		loading.value = true;
@@ -158,7 +161,7 @@
 	};
 
 	const gotoHome = () => {
-		window.location.href = '/profile';
+		router.push('/home');
 	};
 	// 定义提交事件
 	const loginClick = (): void => {
