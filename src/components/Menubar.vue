@@ -81,9 +81,47 @@
 						/>
 					</div>
 					<Avatar
-						image="https://cdn.pixabay.com/photo/2024/02/24/00/05/concert-hall-8593024_1280.jpg"
+						:image="avatar"
 						shape="circle"
+						aria-haspopup="true"
+						aria-controls="user-menu"
+						@click="toggleUserOptions"
 					/>
+					<Menu
+						ref="user_menu"
+						id="user-menu"
+						:model="user_options"
+						:popup="true"
+						@command="handleMenuItems"
+						><template #item="{ item, props }">
+							<router-link
+								v-if="item.route"
+								v-slot="{ href, navigate }"
+								:to="item.route"
+								custom
+							>
+								<a
+									v-ripple
+									:href="href"
+									v-bind="props.action"
+									@click="navigate"
+								>
+									<span :class="item.icon" />
+									<span class="ml-2">{{ item.label }}</span>
+								</a>
+							</router-link>
+							<a
+								v-else
+								v-ripple
+								:href="item.url"
+								:target="item.target"
+								v-bind="props.action"
+							>
+								<span :class="item.icon" />
+								<span class="ml-2">{{ item.label }}</span>
+							</a>
+						</template>
+					</Menu>
 				</div>
 			</template>
 		</Menubar>
@@ -92,77 +130,114 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, defineAsyncComponent } from 'vue';
-import DynamicDialog from 'primevue/dynamicdialog';
-import Menubar from 'primevue/menubar';
-import { useDialog } from 'primevue/useDialog';
-import wordsList from './WordsList.vue';
+	import { ref, onMounted, onBeforeUnmount } from 'vue';
+	import DynamicDialog from 'primevue/dynamicdialog';
+	import Menubar from 'primevue/menubar';
+	import { useDialog } from 'primevue/useDialog';
+	import wordsList from './WordsList.vue';
 
-const items = ref([
-	{ label: '首页', icon: 'pi pi-home', route: '/home' },
-	{ label: '单词记忆', icon: 'pi pi-bolt' },
-	{ label: '短文学习', icon: 'pi pi-graduation-cap' },
-	{ label: '频道活动', icon: 'pi pi-envelope', badge: 3 },
-	{ label: '联系客服', icon: 'pi pi-link', route: '/contact' },
-	{
-		label: '技术支持',
-		icon: 'pi pi-sparkles',
-		items: [
-			{ label: 'Vue', url: 'https://vuejs.org/' },
-			{ label: 'Vite', url: 'https://vitejs.dev/' },
-			{ label: 'Pinia', url: 'https://pinia.vuejs.org/' },
-			{ label: 'Axios', url: 'https://axios-http.com/' },
-			{ label: 'Prime Vue', url: 'https://primevue.org/' },
-		],
-	},
-]);
-
-const dialog = useDialog();
-const dialogActive = ref(false);
-let dialogRef = null;
-
-const toggleWordsList = () => {
-	if (dialogActive.value) {
-		closeWordsList();
-	} else {
-		// TODO:第一次点击正常 关闭dialog后再次点击无效 必须双击才能正常运行
-		console.log('click trigger')
-		showWordsList();
-	}
-};
-
-const showWordsList = () => {
-	dialogRef = dialog.open(wordsList, {
-		props: {
-			header: '单词列表',
-			style: { width: '30vw' },
-			breakpoints: { '960px': '75vw', '640px': '90vw' },
-			modal: true,
-			dismissableMask: true,
+	const items = ref([
+		{ label: '首页', icon: 'pi pi-home', route: '/home' },
+		{ label: '单词记忆', icon: 'pi pi-bolt' },
+		{ label: '短文学习', icon: 'pi pi-graduation-cap' },
+		{ label: '频道活动', icon: 'pi pi-envelope', badge: 3 },
+		{ label: '联系客服', icon: 'pi pi-link', route: '/contact' },
+		{
+			label: '技术支持',
+			icon: 'pi pi-sparkles',
+			items: [
+				{ label: 'Vue', url: 'https://vuejs.org/' },
+				{ label: 'Vite', url: 'https://vitejs.dev/' },
+				{ label: 'Pinia', url: 'https://pinia.vuejs.org/' },
+				{ label: 'Axios', url: 'https://axios-http.com/' },
+				{ label: 'Prime Vue', url: 'https://primevue.org/' },
+			],
 		},
-	});
-	dialogActive.value = true;
-};
+	]);
 
-const closeWordsList = () => {
-	if (dialogRef) {
-		dialogRef.close();
-		dialogActive.value = false;
-	}
-};
+	const avatar = ref(
+		'https://cdn.pixabay.com/photo/2024/02/24/00/05/concert-hall-8593024_1280.jpg',
+	);
+	const user_menu = ref();
+	const user_options = ref([
+		{
+			label: 'Options',
+			items: [
+				{
+					label: 'Edit Profile',
+					icon: 'pi pi-pencil',
+					route: '/profile',
+				},
+				{
+					label: 'Change Password',
+					icon: 'pi pi-cog',
+					command: () => {
+						console.log('change password');
+					},
+				},
+				{
+					label: 'Log out',
+					icon: 'pi pi-sign-out',
+					command: () => {
+						localStorage.removeItem('authToken');
+						location.reload();
+					},
+				},
+			],
+		},
+	]);
+	const toggleUserOptions = event => {
+		user_menu.value.toggle(event);
+	};
+	const handleMenuItems = event => {
+		console.log(event.item);
+	};
 
-const handleSearchKeyDown = event => {
-	if (event.ctrlKey && event.key === 'k') {
-		event.preventDefault();
-		toggleWordsList();
-	}
-};
+	const dialog = useDialog();
+	const dialogActive = ref(false);
+	let dialogRef = null;
 
-const manageKeyEvent = (action) => {
-	window[action]('keydown', handleSearchKeyDown);
-};
+	const toggleWordsList = () => {
+		if (dialogActive.value) {
+			closeWordsList();
+		} else {
+			// TODO:第一次点击正常 关闭dialog后再次点击无效 必须双击才能正常运行
+			console.log('click trigger');
+			showWordsList();
+		}
+	};
 
-onMounted(() => manageKeyEvent('addEventListener'));
-onBeforeUnmount(() => manageKeyEvent('removeEventListener'));
+	const showWordsList = () => {
+		dialogRef = dialog.open(wordsList, {
+			props: {
+				header: '单词列表',
+				style: { width: '30vw' },
+				breakpoints: { '960px': '75vw', '640px': '90vw' },
+				modal: true,
+				dismissableMask: true,
+			},
+		});
+		dialogActive.value = true;
+	};
 
+	const closeWordsList = () => {
+		if (dialogRef) {
+			dialogRef.close();
+			dialogActive.value = false;
+		}
+	};
+
+	const handleSearchKeyDown = event => {
+		if (event.ctrlKey && event.key === 'k') {
+			event.preventDefault();
+			toggleWordsList();
+		}
+	};
+
+	const manageKeyEvent = action => {
+		window[action]('keydown', handleSearchKeyDown);
+	};
+
+	onMounted(() => manageKeyEvent('addEventListener'));
+	onBeforeUnmount(() => manageKeyEvent('removeEventListener'));
 </script>

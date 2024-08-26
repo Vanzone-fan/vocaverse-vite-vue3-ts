@@ -130,7 +130,7 @@
 				timeout,
 			])) as { data: { code: number; msg: string; data: any } };
 
-			console.log(res.data);
+			console.log(res);
 			const resCode = res.data.code;
 
 			if (resCode === 404) {
