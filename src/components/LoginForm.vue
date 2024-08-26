@@ -1,7 +1,13 @@
 <template>
 	<div class="p-6 bg-white rounded-xl shadow-2xl flex flex-col items-center">
-		<Toast position="top-center" group="error" />
-		<Toast position="top-center" group="warn">
+		<Toast
+			position="top-center"
+			group="error"
+		/>
+		<Toast
+			position="top-center"
+			group="warn"
+		>
 			<template #message="slotProps">
 				<div class="flex flex-col items-start flex-auto">
 					<div class="font-medium text-lg my-4">
@@ -73,15 +79,15 @@
 			label="Go to Register"
 			icon="pi pi-check"
 			icon-pos="right"
-			:loading="false"
 			@click="gotoReg"
 		/>
 	</div>
 </template>
+
 <script setup lang="ts">
 	import { ref } from 'vue';
 	import { useToast } from 'primevue/usetoast';
-	import axios from 'axios';
+	import axios, { AxiosResponse } from 'axios';
 	import { useRouter } from 'vue-router';
 
 	const router = useRouter();
@@ -95,9 +101,8 @@
 		showPassword.value = !showPassword.value;
 	};
 
-	const validateEmpty = (): void => {
-		const isEmpty = !usernameValue.value || !passwordValue.value;
-		if (isEmpty) {
+	const validateEmpty = (): boolean => {
+		if (!usernameValue.value || !passwordValue.value) {
 			toast.add({
 				group: 'error',
 				severity: 'error',
@@ -105,72 +110,70 @@
 				detail: '用户名或密码不能为空',
 				life: 1000,
 			});
+			return true;
 		}
+		return false;
 	};
 
-	const validateNotReg = () => {
-		toast.add({
-			group: 'warn',
-			severity: 'warn',
-			summary: '登录失败, 用户不存在',
-			detail: '用户不存在',
-		});
-	};
-	const gotoReg = () => {
-		router.push('/register');
-	};
-	const validateSuccess = async (): Promise<void> => {
+	const loginRequest = async (): Promise<void> => {
 		loading.value = true;
-
 		const timeout = new Promise((_, reject) =>
 			setTimeout(() => reject(new Error('登录超时，请稍后重试')), 5000),
 		);
 
-		Promise.race([
-			axios.post('http://localhost:8080/login/user', {
-				userName: usernameValue.value,
-				password: passwordValue.value,
-			}),
-			timeout,
-		])
-			.then(res => {
-				const resCode = res.data.code;
-				if (resCode == 200) {
-					toast.add({
-						group: 'success',
-						severity: 'success',
-						summary: '登录成功',
-						detail: `${usernameValue.value} , 欢迎使用Vocaverse ! `,
-						life: 1000,
-					});
-				}
-			})
-			.catch(error => {
-				console.error(error.message || '发生未知错误');
+		try {
+			const res = (await Promise.race([
+				axios.post('http://localhost:8080/login/user', {
+					userName: usernameValue.value,
+					password: passwordValue.value,
+				}),
+				timeout,
+			])) as { data: { code: number; msg: string; data: any } };
+
+			console.log(res.data);
+			const resCode = res.data.code;
+
+			if (resCode === 404) {
 				toast.add({
-					group: 'error',
-					severity: 'error',
-					summary: '登录失败',
-					detail: error.message || '发生未知错误，请稍后重试',
+					group: 'warn',
+					severity: 'warn',
+					summary: '用户未注册',
+				});
+			} else if (resCode === 200) {
+				toast.add({
+					group: 'success',
+					severity: 'success',
+					summary: '登录成功',
+					detail: `${usernameValue.value} , 欢迎使用Vocaverse ! `,
 					life: 1000,
 				});
-			})
-			.finally(() => {
-				loading.value = false;
+				localStorage.setItem('authToken', res.data.data);
+			} else {
+				throw new Error('未知错误');
+			}
+		} catch (error) {
+			toast.add({
+				group: 'error',
+				severity: 'error',
+				summary: '登录失败',
+				detail: error.message || '发生未知错误，请稍后重试',
+				life: 1000,
 			});
+		} finally {
+			loading.value = false;
+		}
+	};
+
+	const loginClick = (): void => {
+		if (validateEmpty()) return;
+		loginRequest();
+	};
+
+	const gotoReg = () => {
+		router.push('/register');
 	};
 
 	const gotoHome = () => {
 		router.push('/home');
-	};
-	// 定义提交事件
-	const loginClick = (): void => {
-		// 判断username和password是否为空 为空去提示
-		validateEmpty();
-		// 判断username是否存在 不存在去注册
-		// validateNotReg();
-		// 存在去判断密码对不对
-		// username存在 password正确 登录成功
-		validateSuccess();
 	};
 </script>
