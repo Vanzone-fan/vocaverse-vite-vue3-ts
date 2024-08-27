@@ -38,6 +38,24 @@ const routes: Array<RouteRecordRaw> = [
 		meta: { requiresAuth: true },
 	},
 	{
+		path:'/word-memory',
+		name: 'WordMemory',
+		component: () => import('../views/WordMemory.vue'),
+		meta: { requiresAuth: true },
+	},
+	{
+		path:'/article-study',
+		name: 'ArticleStudy',
+		component: () => import('../views/ArticleStudy.vue'),
+		meta: { requiresAuth: true },
+	},
+	{
+		path:'/channel-activity',
+		name: 'ChannelActivity',
+		component: () => import('../views/Channel.vue'),
+		meta: { requiresAuth: true },
+	},
+	{
 		path: '/word-list',
 		name: 'WordList',
 		component: () => import('../components/WordsList.vue'),

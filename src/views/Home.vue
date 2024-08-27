@@ -1,7 +1,9 @@
-<!-- src/views/Home.vue -->
 <template>
-	<div>
+	<div class="min-h-screen flex flex-col">
 		<Menubar />
+		<div class="flex flex-grow justify-center items-center bg-stone-100">
+			asd
+		</div>
 	</div>
 </template>
 

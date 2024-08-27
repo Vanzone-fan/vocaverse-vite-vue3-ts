@@ -1,6 +1,9 @@
 <template>
 	<div class="card">
-		<Menubar :model="items">
+		<Menubar
+			:model="items"
+			class="transition ease-in-out duration:300 hover:scale-120"
+		>
 			<!-- Here's PrimeVue Logo  -->
 			<template #start>
 				<svg
@@ -29,6 +32,7 @@
 					custom
 				>
 					<a
+						class="hover:scale-110 transition ease-in-out duration-300"
 						v-ripple
 						:href="href"
 						v-bind="props.action"
@@ -50,6 +54,7 @@
 				<a
 					v-else
 					v-ripple
+					class="hover:scale-110 transition ease-in-out duration-300"
 					:href="item.url"
 					:target="item.target"
 					v-bind="props.action"
@@ -74,13 +79,18 @@
 							class="pi pi-search absolute right-2 top-[50%] translate-y-[-50%]"
 						></i>
 						<InputText
-							placeholder="CTRL+K"
+							:placeholder="deviceFlag ? 'CTRL+K' : ''"
 							type="text"
 							class="pl-8 w-32 sm:w-auto"
 							@click="toggleWordsList"
 						/>
 					</div>
 					<Avatar
+						class="hover:scale-150
+						transition
+						ease-in-out
+						duration-300
+						ml-5"
 						:image="avatar"
 						shape="circle"
 						aria-haspopup="true"
@@ -135,12 +145,15 @@
 	import Menubar from 'primevue/menubar';
 	import { useDialog } from 'primevue/useDialog';
 	import wordsList from './WordsList.vue';
+	const deviceFlag =
+		!navigator.maxTouchPoints || navigator.maxTouchPoints === 0;
 
+		const channel_activity_badge = 15
 	const items = ref([
 		{ label: '首页', icon: 'pi pi-home', route: '/home' },
-		{ label: '单词记忆', icon: 'pi pi-bolt' },
-		{ label: '短文学习', icon: 'pi pi-graduation-cap' },
-		{ label: '频道活动', icon: 'pi pi-envelope', badge: 3 },
+		{ label: '单词记忆', icon: 'pi pi-bolt',route:'/word-memory' },
+		{ label: '短文学习', icon: 'pi pi-graduation-cap' ,route:'/article-study'},
+		{ label: '频道活动', icon: 'pi pi-envelope', badge: channel_activity_badge ,route:'/channel-activity'},
 		{ label: '联系客服', icon: 'pi pi-link', route: '/contact' },
 		{
 			label: '技术支持',
@@ -155,28 +168,26 @@
 		},
 	]);
 
-	const avatar = ref(
-		'https://cdn.pixabay.com/photo/2024/02/24/00/05/concert-hall-8593024_1280.jpg',
-	);
+	const avatar = ref('src/assets/default-avatar-female.png');
 	const user_menu = ref();
 	const user_options = ref([
 		{
 			label: 'Options',
 			items: [
 				{
-					label: 'Edit Profile',
+					label: '编辑个人信息',
 					icon: 'pi pi-pencil',
 					route: '/profile',
 				},
 				{
-					label: 'Change Password',
+					label: '修改密码',
 					icon: 'pi pi-cog',
 					command: () => {
 						console.log('change password');
 					},
 				},
 				{
-					label: 'Log out',
+					label: '退出登录',
 					icon: 'pi pi-sign-out',
 					command: () => {
 						localStorage.removeItem('authToken');
@@ -238,6 +249,8 @@
 		window[action]('keydown', handleSearchKeyDown);
 	};
 
-	onMounted(() => manageKeyEvent('addEventListener'));
+	onMounted(() => {
+		manageKeyEvent('addEventListener');
+	});
 	onBeforeUnmount(() => manageKeyEvent('removeEventListener'));
 </script>

@@ -12,6 +12,7 @@
     "@primevue/themes": "^4.0.4",
     "axios": "^1.7.4",
     "axioss": "0.0.1-security",
+    "chart.js": "^4.4.4",
     "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
     "glob": "5.0.15",
