@@ -172,10 +172,10 @@
 	const user_menu = ref();
 	const user_options = ref([
 		{
-			label: 'Options',
+			label: '选项',
 			items: [
 				{
-					label: '编辑个人信息',
+					label: '个人信息',
 					icon: 'pi pi-pencil',
 					route: '/profile',
 				},

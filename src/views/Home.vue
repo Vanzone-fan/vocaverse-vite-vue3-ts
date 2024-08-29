@@ -1,7 +1,7 @@
 <template>
-	<div class="min-h-screen flex flex-col">
+	<div class="min-h-screen flex flex-col bg-stone-100">
 		<Menubar />
-		<div class="flex flex-grow justify-center items-center bg-stone-100">
+		<div class="flex flex-grow justify-center items-center ">
 			asd
 		</div>
 	</div>

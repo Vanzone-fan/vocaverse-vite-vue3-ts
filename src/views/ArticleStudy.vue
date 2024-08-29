@@ -1,15 +1,11 @@
 <template>
-	<div class="min-h-screen flex flex-col">
+	<div class="min-h-screen flex flex-col bg-stone-100">
 		<Menubar />
 
-		<div class="flex flex-grow justify-center items-center bg-stone-100">
+		<div class="flex flex-grow justify-center items-center">
 			<Card class="w-96 shadow-lg rounded-lg p-6 bg-stone-100">
 				<template #title>
-					<h2
-						class="text-2xl font-semibold text-center text-gray-800"
-					>
-						联系我们
-					</h2>
+					<h2 class="text-2xl font-semibold text-center text-gray-800">联系我们</h2>
 				</template>
 				<template #content>
 					<div class="flex justify-between items-center mt-4">
@@ -23,20 +19,12 @@
 
 						<div>
 							<div class="flex flex-col mb-4">
-								<span class="text-lg font-medium text-gray-700"
-									>电话</span
-								>
-								<span class="text-lg text-gray-600"
-									>155-3542-6166</span
-								>
+								<span class="text-lg font-medium text-gray-700">电话</span>
+								<span class="text-lg text-gray-600">155-3542-6166</span>
 							</div>
 							<div class="flex flex-col">
-								<span class="text-lg font-medium text-gray-700"
-									>邮箱</span
-								>
-								<span class="text-lg text-gray-600"
-									>2329582412@qq.com</span
-								>
+								<span class="text-lg font-medium text-gray-700">邮箱</span>
+								<span class="text-lg text-gray-600">2329582412@qq.com</span>
 							</div>
 						</div>
 					</div>

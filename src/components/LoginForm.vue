@@ -29,7 +29,7 @@
 			@life-end="gotoHome"
 		/>
 
-		<div class="text-3xl font-bold font-mono mb-6">Login</div>
+		<div class="text-3xl font-bold font-mono mb-6">登录</div>
 
 		<FloatLabel class="mt-4 mb-6 w-full">
 			<InputText
@@ -39,7 +39,7 @@
 				:disabled="loading"
 				@keyup.enter="loginClick"
 			/>
-			<label for="username">Username</label>
+			<label for="username">用户名</label>
 		</FloatLabel>
 
 		<FloatLabel class="mt-4 mb-6 w-full">
@@ -51,7 +51,7 @@
 				:type="showPassword ? 'text' : 'password'"
 				@keyup.enter="loginClick"
 			/>
-			<label for="password">Password</label>
+			<label for="password">密码</label>
 			<i
 				:class="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"
 				class="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
@@ -64,7 +64,7 @@
 			type="button"
 			severity="info"
 			raised
-			label="Login"
+			label="登录"
 			icon="pi pi-check"
 			icon-pos="right"
 			:loading="loading"
@@ -76,7 +76,7 @@
 			type="button"
 			severity="secondary"
 			raised
-			label="Go to Register"
+			label="去注册"
 			icon="pi pi-check"
 			icon-pos="right"
 			@click="gotoReg"

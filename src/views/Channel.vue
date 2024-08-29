@@ -1,8 +1,8 @@
 <template>
-	<div class="min-h-screen flex flex-col">
+	<div class="min-h-screen flex flex-col bg-stone-100">
 		<Menubar />
 
-		<div class="flex flex-grow justify-center items-center bg-stone-100">
+		<div class="flex flex-grow justify-center items-center ">
 			<Card class="w-96 shadow-lg rounded-lg p-6 bg-stone-100">
 				<template #title>
 					<h2

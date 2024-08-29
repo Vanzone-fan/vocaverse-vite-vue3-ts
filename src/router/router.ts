@@ -78,7 +78,7 @@ const parseJWT = (token: string | null): boolean => {
 		const current = Date.now();
 		return current <= exp;
 	} catch (error) {
-		console.error('JWT parsing error:', error);
+		console.error('令牌解析失败:', error);
 		return false;
 	}
 };
